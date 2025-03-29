@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body id="popup-body">
+    <div class="header-container">
+      <h2>
+        Followers Logger
+      </h2>
+      <button id="settings-button" class="settings-button">
+        Settings
+      </button>
+    </div>
+
+    <div id="main-view">
+      <h3 hidden id="error_message" style="color:red; text-align: center; padding: 0px;">
+        <!-- Not an instagram page error message -->
+      </h3>
+      
+      <div id="save_button_container">
+        <button id="save_button">
+          Save Current User
+        </button>
+        <button id="update_logs">
+          Update Logs
+        </button>
+      </div>
+
+      <h3 style="text-align: center; padding: 0px;">
+        Logs
+      </h3>
+      <div id="logs-container">
+        <!-- Log entries will be appended here -->
+      </div>
+
+      <div id="selected-log-details" style="display: none;">
+        <div class="log-header" style="padding: 0px; margin-bottom: 5px;">
+          <h4 id="selected-log-details-header">Log Details</h4>
+        </div>
+        <div style="display: flex; flex-direction: row; text-align: center; margin-bottom: 10px; padding: 5px;">
+          
+          <button id="compare-logs-button" style="width: 50%; margin: 5px; margin-top: 5px;">
+            Compare with...
+          </button>
+
+          <button id="delete-log-button" style="width: 40%; margin: 5px; margin-top: 5px;">
+            Delete Log
+          </button>
+
+        </div>
+        <div id="comparison-selector" style="display: none; padding: 0px;">
+          
+          <p>
+            Select a log to compare with:
+          </p>
+          
+          <div id="comparison-logs-list">
+            <!-- Comparison log entries will be appended here -->
+          </div>
+
+        </div>
+        
+        <div id="comparison-results" style="display: none;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+
+            <button id="close-comparison-button" style="width: auto; padding: 5px 10px; margin: 0;">
+              Close
+            </button>
+            
+            <button id="export-comparison-button" style="width: auto; padding: 5px 10px; margin: 0;">
+              Export Differences
+            </button>
+
+          </div>
+          <pre id="comparison-content"></pre>
+        </div>
+        <pre id="log-content"></pre>
+      </div>
+
+      <div id="log-details-container">
+        <!-- Log details will be appended here -->
+      </div>
+    </div>
+
+    <div id="settings-view" style="display: none;" class="settings-view">
+      <h3>Settings</h3>
+      
+      <div class="settings-option" style="padding: 10px;">
+        <div id="log-limit-option">
+          
+          <h4 for="log-interval" style="margin: 0; padding: 0;">
+            Log Count Limit :
+          </h4>
+          
+          <input type="number" id="log-limit" min="1">
+        </div>
+
+        <p class="settings-description" style="text-align: left;">
+          The maximum number of users to log. Larger values may lead to temporary account bans (e.g >5000).
+        </p>
+      </div>
+
+      <button id="export_logs">
+        Export Logs
+      </button>
+
+      <button id="clear_logs">
+        Clear ALL Logs
+      </button>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+    <script src="Save_Followers.js"></script>
+    <script src="logComparer.js"></script>
+  </body>
+</html>

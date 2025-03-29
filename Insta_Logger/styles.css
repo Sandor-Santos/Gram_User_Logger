@@ -1,0 +1,233 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+    max-width: 400px;  /* Add maximum width */
+    min-height: 100px;
+    max-height: 600px; /* Add maximum height */
+    padding: 15px;
+    margin: 3px;
+    margin-top: 5px;
+    overflow-y: auto;  /* Enable scrolling for entire popup if needed */
+    border: 3px solid #e7e7e7;
+    border-radius: 10px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    width: 80%; /* Makes buttons consistent width */
+    background-color: #f0f0f0;
+}
+
+button:hover {
+    background-color: #ccc;
+    transition: background-color 0.2s ease;
+
+}
+
+.settings-button {
+    font-size: 14px;
+    max-width: 100px;
+}
+
+#logs-container {
+    margin-top: 20px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.log-entry {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    user-select: none;
+    border: 2px solid #f6f5f5;
+    border-radius: 6px;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
+.log-entry:hover {
+    background-color: #c5c5c5;
+}
+
+.log-details {
+    display: none;
+    padding: 10px;
+    background-color: #f5f5f5;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.log-entry.active .log-details {
+    display: block;
+}
+
+.header-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
+#main-view, #settings-view {
+    width: 100%;
+    transition: display 0.3s ease;
+}
+
+#settings-view {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+#settings-view h3 {
+    margin: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+#clear_logs {
+    width: 80%;
+    transition: all 0.3s ease;
+    color: red
+}
+
+#clear_logs.confirm {
+    background-color: #ff4444;
+    color: white;
+    border-color: #ff4444;
+}
+
+#log-limit-option {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    max-height: 25px; 
+    padding: 5px; 
+    align-items: center;
+}
+
+#save_button_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+#selected-log-details {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    width: 100%;
+    max-height: 250px;    /* Reduce maximum height */
+    overflow-y: auto;     /* Enable vertical scrolling */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+#selected-log-details pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;  /* Include padding in width calculation */
+}
+
+#selected-log-details h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+#comparison-selector {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+#comparison-logs-list .log-entry {
+    padding: 5px 10px;
+    margin: 2px 0;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+#comparison-logs-list .log-entry:hover {
+    background-color: #e0e0e0;
+}
+
+#comparison-results {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+
+#comparison-results pre {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+#compare-logs-button {
+    background-color: #ffe68a;
+    display: inline-block;
+    margin: 0 auto;
+    width: 50%;
+}
+
+#compare-logs-button:hover {
+    background-color: #ffd54f;
+}
+
+#delete-log-button {
+    color: red;
+}
+#delete-log-button:hover {
+    background-color: red;
+    color: white;
+}
+
+#export-comparison-button {
+    font-size: 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#export-comparison-button:hover {
+    background-color: #e0e0e0;
+}

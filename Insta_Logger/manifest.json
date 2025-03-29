@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Follows Logger",
+  "version": "1.0",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.instagram.com/*"
+  ],
+  "action": {
+    "default_popup": "Popup.html",
+    "default_icon": "Profile_Icon.png"
+  },
+  "description": "Base Level Extension",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "web_accessible_resources": [{
+    "resources": ["styles.css"],
+    "matches": ["<all_urls>"]
+  }]
+}
