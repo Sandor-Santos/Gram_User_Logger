@@ -2,7 +2,7 @@
 A Chrome Extension to log Instagram followers for comparison to earlier logs
 
 [How to Install
-](https://github.com/Swaghacker7/Gram_User_Logger/edit/main/README.md#--how-to-install)
+](https://github.com/Swaghacker7/Gram_User_Logger/main/README.md#--how-to-install)
 
 <h2>
   Currently Supported Features:
