@@ -19,3 +19,4 @@ A Chrome Extension to log Instagram followers for comparison to earlier logs
 <h3>
   Screenshots:
 </h3>
+[Screenshot 1](Screenshots/FL_Screenshot_1.png)
