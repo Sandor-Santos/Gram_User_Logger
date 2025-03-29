@@ -42,15 +42,25 @@ A Chrome Extension to log Instagram followers for comparison to earlier logs
 
 ---
 
-<h2>
+<h1>
   How To Install
-</h2>
+</h1>
 
-1. Navigate to chrome://extensions/
-2. Enable Developer Mode
-3. Click Load Unpacked
-4. Select Insta_Logger folder
+1. Go to the Extensions page by entering ```chrome://extensions``` in a new tab
+   - Alternatively, click the Extensions menu puzzle button and select **Manage Extensions** at the bottom of the menu.
+   - Or, click the Chrome menu, hover over **More Tools**, then select **Extensions**.
+
+2. Enable Developer Mode by clicking the toggle switch next to Developer mode
+
+3. Click **Load Unpacked**
+
+4. Select the **Insta_Logger** folder
+
 5. Allow necessary permissions
+
 6. Done!
 
-<img src="https://developer.chrome.com/static/docs/extensions/get-started/tutorial/hello-world/image/extensions-page-e0d64d89a6acf_1920.png" width=50%>
+> Make sure to pin the extension for easy access
+<p align="center">
+  <img src="https://developer.chrome.com/static/docs/extensions/get-started/tutorial/hello-world/image/extensions-page-e0d64d89a6acf_1920.png" width=50%>
+</p>
