@@ -57,7 +57,7 @@ A Chrome Extension to log Instagram followers for comparison to earlier logs
 </h2>
 
 1. Go to the Extensions page by entering ```chrome://extensions``` in a new tab
-   - Alternatively, click the Extensions menu puzzle button and select **Manage Extensions** at the bottom of the menu.
+   - Alternatively, click the ```Three Dots ⋮``` next to your Chrome Profile Image select **Extensions > Manage Extensions** near the middle of the menu.
    - Or, click the Chrome menu, hover over **More Tools**, then select **Extensions**.
 
 2. Enable Developer Mode by clicking the toggle switch next to Developer mode
