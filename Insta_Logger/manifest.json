@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Follows Logger",
-  "version": "1.0",
+  "version": "1.2",
   "permissions": [
     "activeTab",
     "scripting",
@@ -15,7 +15,7 @@
     "default_popup": "Popup.html",
     "default_icon": "Profile_Icon.png"
   },
-  "description": "Base Level Extension",
+  "description": "Logging follows and unfollows on Instagram.",
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
