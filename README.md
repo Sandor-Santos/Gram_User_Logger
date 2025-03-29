@@ -5,6 +5,14 @@ A Chrome Extension to log Instagram followers for comparison to earlier logs
 ](https://github.com/Swaghacker7/Gram_User_Logger#--how-to-install)
 
 <h2>
+  How to Use
+</h2>
+
+1. Navigate to an Instagram Profile on the Instagram website https://Instagram.com/
+2. Open the **Follows Logger** Extensions
+3. Click the "Save Current User" button
+
+<h2>
   Currently Supported Features
 </h2>
 
