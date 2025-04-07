@@ -1,8 +1,45 @@
+:root {
+
+    --main-background-color-lightMode: #ffffff;
+    --main-border-color-lightMode: #e7e7e7;
+
+    --grey-border-color: #e7e7e7;
+
+    --dark-button-color-lightMode: #f0f0f0;
+    --dark-button-hover-color-lightMode: #ccc;
+
+    --light-button-color: #f9f9f9;
+    --light-button-border-color: #ccc;
+    --light-button-hover-color: #ccc;
+
+    --log-entry-background-color-lightMode: #f0f0f0;
+    --log-entry-border-color-lightMode: #f6f5f5;
+
+    --log-details-background-color-lightMode: #f8f8f8;
+    --log-details-border-color-lightMode: #ccc;
+
+    --log-details-file-background-color-lightMode: #ffffff;
+
+    --compare-button-color: #ffe68a;
+    --compare-button-hover-color: #ffd54f;
+
+    --delete-log-button-color: #ff4444;
+    --delete-log-button-hover-color: #ff0000;
+
+    --is-comparable-border-color-1: #eee;
+    --is-comparable-border-color-2: #000;
+
+    --comparable-item-color: #ffe68a;
+    --comparable-item-border-color: #ffd54f;
+
+    --text-color-lightMode: #333;
+}
+
 body {
     display: flex;
     flex-direction: column;
+    background-color: var(--main-background-color-lightMode);
     align-items: center;
-    justify-content: center;
     min-width: 300px;
     max-width: 400px;  /* Add maximum width */
     min-height: 100px;
@@ -10,38 +47,60 @@ body {
     padding: 15px;
     margin: 3px;
     margin-top: 5px;
-    overflow-y: auto;  /* Enable scrolling for entire popup if needed */
-    border: 3px solid #e7e7e7;
+    overflow-y: scroll;  /* Enable scrolling for entire popup if needed */
+    border: 3px solid var(--main-border-color-lightMode);
     border-radius: 10px;
+    color: var(--text-color-lightMode);
 }
 
 button {
+    font-size: 14px;
     margin-top: 10px;
     padding: 8px 16px;
     border-radius: 4px;
-    border: 1px solid #ccc;
     cursor: pointer;
     width: 80%; /* Makes buttons consistent width */
-    background-color: #f0f0f0;
+    color: var(--text-color-lightMode);
+    background-color: var(--dark-button-color-lightMode);
+    border: 1px solid var(--light-button-border-color);
+
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
 }
 
 button:hover {
-    background-color: #ccc;
+    background-color: var(--dark-button-hover-color-lightMode);
     transition: background-color 0.2s ease;
 
 }
 
+#error_message {
+    font-size: 14px;
+    color: red;
+    text-align: center;
+    padding: 5px;
+    margin: 0px;
+
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
 .settings-button {
+    background-color: var(--dark-button-color-lightMode);
     font-size: 14px;
     max-width: 100px;
 }
 
 #logs-container {
-    margin-top: 20px;
+    margin-top: 15px;
     width: 100%;
     max-height: 200px;
     overflow-y: auto;
-    background-color: #f0f0f0;
+    background-color: var(--dark-button-color-lightMode);
     border-radius: 6px;
     text-align: left;
 }
@@ -51,36 +110,42 @@ button:hover {
     border-bottom: 1px solid #eee;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    user-select: none;
-    border: 2px solid #f6f5f5;
+    background-color: var(--log-entry-background-color-lightMode);
+    border: 2px solid var(--log-entry-border-color-lightMode);
     border-radius: 6px;
+    
+    user-select: none;
     -webkit-user-select: none; /* Safari support */
     -moz-user-select: none; /* Firefox support */
     -ms-user-select: none; /* IE/Edge support */
 }
 
 .log-entry:hover {
-    background-color: #c5c5c5;
+    background-color: var(--dark-button-hover-color-lightMode);
 }
 
 .log-details {
     display: none;
     padding: 10px;
-    background-color: #f5f5f5;
+    background-color: red;
     margin: 5px 0;
     border-radius: 4px;
 }
 
 .log-entry.active .log-details {
+    background-color: red;
     display: block;
 }
 
 .header-container {
+    position: relative;
+    top: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 1px 0 10px 0;
+
     user-select: none;
     -webkit-user-select: none; /* Safari support */
     -moz-user-select: none; /* Firefox support */
@@ -88,6 +153,7 @@ button:hover {
 }
 
 #main-view, #settings-view {
+    top: 0;
     width: 100%;
     transition: display 0.3s ease;
 }
@@ -98,25 +164,20 @@ button:hover {
     justify-content: center;
     text-align: center;
     flex-direction: column;
+    padding-bottom: 20px;
     width: 100%;
+    font-size: 14px;
+
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
 }
 
 #settings-view h3 {
     margin: 5px;
     width: 100%;
     text-align: center;
-}
-
-#clear_logs {
-    width: 80%;
-    transition: all 0.3s ease;
-    color: red
-}
-
-#clear_logs.confirm {
-    background-color: #ff4444;
-    color: white;
-    border-color: #ff4444;
 }
 
 #log-limit-option {
@@ -128,6 +189,52 @@ button:hover {
     align-items: center;
 }
 
+#import-section {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#import_logs {
+    font: default;
+    background-color: var(--dark-button-color-lightMode);
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
+#import_logs:hover {
+    background-color: var(--dark-button-hover-color-lightMode);
+}
+
+#import_logs.importing {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#export_logs {
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
+#clear_ALL_logs {
+    width: 80%;
+    transition: all 0.3s ease;
+    color: red;
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
+#clear_ALL_logs.confirm {
+    background-color: #ff4444;
+    color: white;
+    border-color: #ff4444;
+}
+
 #save_button_container {
     display: flex;
     flex-direction: row;
@@ -136,10 +243,18 @@ button:hover {
     gap: 10px;
 }
 
+#logs-title {
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+}
+
 #selected-log-details {
     margin-top: 20px;
+    border : 2px solid var(--log-details-border-color-lightMode);
     padding: 10px;
-    background-color: #f0f0f0;
+    background-color: var(--log-details-background-color-lightMode);
     border-radius: 4px;
     width: 100%;
     max-height: 250px;    /* Reduce maximum height */
@@ -152,14 +267,37 @@ button:hover {
     word-wrap: break-word;
     margin: 0;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: var(--log-details-file-background-color-lightMode);
+    border: 1px solid var(--log-details-border-color-lightMode);
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;  /* Include padding in width calculation */
 }
 
 #selected-log-details h4 {
-    margin: 0 0 10px 0;
+    margin: 10px 0 10px 0;
+    color: var(--text-color-lightMode);
+}
+
+.details-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+}
+
+.close-details-button {
+    align-self: flex-start;
+    width: auto; 
+    padding: 5px 10px; 
+    margin: 0;
+    background-color: var(--light-button-color);
+    border-radius: 4px;
+}
+
+.close-details-button:hover {
+    background-color: var(--light-button-hover-color);
     color: #333;
 }
 
@@ -167,31 +305,11 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
-}
-
-#comparison-selector {
-    margin: 10px 0;
-    padding: 10px;
-    background-color: #eee;
-    border-radius: 4px;
-}
-
-#comparison-logs-list .log-entry {
-    padding: 5px 10px;
-    margin: 2px 0;
-    background-color: #fff;
-    border-radius: 5px;
-}
-
-#comparison-logs-list .log-entry:hover {
-    background-color: #e0e0e0;
 }
 
 #comparison-results {
-    margin-top: 10px;
     padding: 10px;
-    background-color: #f8f8f8;
+    background-color: var(--log-details-background-color-lightMode);
     border-radius: 4px;
 }
 
@@ -201,27 +319,30 @@ button:hover {
 }
 
 #compare-logs-button {
-    background-color: #ffe68a;
+    background-color: var(--compare-button-color);
     display: inline-block;
+    font-size: 13px;
     margin: 0 auto;
     width: 50%;
 }
 
 #compare-logs-button:hover {
-    background-color: #ffd54f;
+    background-color: var(--compare-button-hover-color);
 }
 
 #delete-log-button {
-    color: red;
+    background-color: var(--light-button-color);
+    font-size: 13px;
+    color: var(--delete-log-button-color);
 }
 #delete-log-button:hover {
-    background-color: red;
+    background-color: var(--delete-log-button-hover-color);
     color: white;
 }
 
 #export-comparison-button {
     font-size: 12px;
-    background-color: #f0f0f0;
+    background-color: var(--dark-button-color-lightMode);
     border: 1px solid #ccc;
     border-radius: 3px;
     cursor: pointer;
@@ -229,5 +350,49 @@ button:hover {
 }
 
 #export-comparison-button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--dark-button-hover-color-lightMode);
+}
+
+@keyframes comparableFlash {
+    0% { border-color: var(--is-comparable-border-color-1); }
+    100% { border-color: var(--is-comparable-border-color-2); }
+}
+
+.comparable {
+    cursor: pointer;
+    opacity: 0.8;
+    border: 2px dashed var(--is-comparable-border-color-1);
+    animation: comparableFlash 0.25s ease-in-out infinite alternate; 
+}
+
+.comparable:hover {
+    opacity: 1;
+    border-color: var(--comparable-item-color);
+    background-color: var(--comparable-item-border-color);
+}
+
+@keyframes updateLogsFlash {
+    0% { background-color: #666; }
+    100% { background-color: none; }
+}
+.update-logs-flash-success {
+    animation: updateLogsFlash 0.45s ease-out;
+}
+
+@keyframes saveFollowersFlashFade {
+    0% { background-color: #4CAF50; }
+    100% { background-color: var(--dark-button-color-lightMode); }
+}
+
+.save-followers-flash-success {
+    animation: saveFollowersFlashFade 1s ease-out;
+}
+
+@keyframes compareFlashFade {
+    0% { background-color: #4CAF50; }
+    100% { background-color: #ffe68a; }
+}
+
+.compare-flash-success {
+    animation: compareFlashFade 1s ease-out;
 }

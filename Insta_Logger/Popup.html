@@ -1,11 +1,11 @@
-<html>
+<html id="popup-html">
   <head>
     <link rel="stylesheet" href="styles.css">
   </head>
 
   <body id="popup-body">
     <div class="header-container">
-      <h2>
+      <h2 style="margin-top: 5px; margin-bottom: 5px; font-size: 18px;">
         Followers Logger
       </h2>
       <button id="settings-button" class="settings-button">
@@ -14,12 +14,12 @@
     </div>
 
     <div id="main-view">
-      <h3 hidden id="error_message" style="color:red; text-align: center; padding: 0px;">
+      <h3 hidden id="error_message">
         <!-- Not an instagram page error message -->
       </h3>
       
       <div id="save_button_container">
-        <button id="save_button">
+        <button id="save_button" style="font-size: 13px;">
           Save Current User
         </button>
         <button id="update_logs">
@@ -27,7 +27,7 @@
         </button>
       </div>
 
-      <h3 style="text-align: center; padding: 0px;">
+      <h3 id="logs-title" style="text-align: center; padding: 0px; font-size: 14px;">
         Logs
       </h3>
       <div id="logs-container">
@@ -35,10 +35,20 @@
       </div>
 
       <div id="selected-log-details" style="display: none;">
-        <div class="log-header" style="padding: 0px; margin-bottom: 5px;">
-          <h4 id="selected-log-details-header">Log Details</h4>
+
+        <div class="log-header" style="padding: 0px; display: flex; flex-direction: column;">
+          <button id="close-details-button" class="close-details-button">
+            Close
+          </button>
+
+
+          <h4 id="selected-log-details-header" style="margin: 5px 0 5px 0;">
+            Log Details
+          </h4>
+
         </div>
-        <div style="display: flex; flex-direction: row; text-align: center; margin-bottom: 10px; padding: 5px;">
+        
+        <div id="details-modify-buttosns" style="display: flex; flex-direction: row; text-align: center; padding: 5px;">
           
           <button id="compare-logs-button" style="width: 50%; margin: 5px; margin-top: 5px;">
             Compare with...
@@ -101,17 +111,24 @@
         </p>
       </div>
 
+      <div class="import-section">
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+        <button id="import_logs">
+          Import Logs
+        </button>
+      </div>
+
       <button id="export_logs">
         Export Logs
       </button>
 
-      <button id="clear_logs">
+      <button id="clear_ALL_logs">
         Clear ALL Logs
       </button>
     </div>
 
     <script type="module" src="popup.js"></script>
     <script src="Save_Followers.js"></script>
-    <script src="logComparer.js"></script>
+    <script src="Log_Comparer.js"></script>
   </body>
 </html>

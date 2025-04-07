@@ -7,9 +7,142 @@ await chrome.storage.local.get(['followerLimit'], (result) => {
         result.followerLimit = 3000;
     }
     document.getElementById('log-limit').value = result.followerLimit || 3000;
+
 });
 
-updateLogs();
+instantiateLogEntries();
+
+/**
+ * Function to refresh popup size;
+ */
+function refreshPopupSize() {
+    let popupBody = document.getElementById('popup-html');
+    popupBody.style.maxHeight = '0px';
+
+    console.log('Popup size refreshed');
+}
+
+/**
+ * 
+ * @returns {Promise<number>} - The follower limit from storage or a default value
+ */
+async function getFollowerLimit() {
+    const result = await chrome.storage.local.get(['followerLimit']);
+    return result.followerLimit || 3000;
+}
+
+/**
+ * Updates and displays the list of saved logs in the popup.
+ * Handles the display of log entries and attaches click listeners.
+ * Shows loading state and error messages when appropriate.
+ * @async
+ * @returns {void}
+ */
+async function instantiateLogEntries() {
+    console.log("Getting logs...");
+    const logsContainer = document.getElementById('logs-container');
+    logsContainer.innerHTML = 'Loading Logs...';
+
+    // Add flash effect to update logs button
+    let updateLogsButton = document.getElementById('update_logs');
+    updateLogsButton.classList.add('update-logs-flash-success');
+    setTimeout(() => {
+        updateLogsButton.classList.remove('update-logs-flash-success');
+    }, 450);
+    
+    try {
+        const result = await chrome.storage.local.get(['Logs']);
+        const logs = result.Logs || {};
+        
+        if (Object.keys(logs).length === 0) {
+            logsContainer.innerHTML = '<div class="log-entry">No logs found</div>';
+            return;
+        }
+
+        console.log('Logs:', logs);
+
+        const logsHtml = Object.keys(logs).map(filename => 
+            `<div class="log-entry" data-filename="${filename}">${filename}</div>`
+        ).join('');
+
+        logsContainer.innerHTML = logsHtml;
+
+        // Add click handlers to log entries
+        const logEntries = logsContainer.querySelectorAll('.log-entry');
+        const detailsContainer = document.getElementById('selected-log-details');
+        const logContent = document.getElementById('log-content');
+
+        logEntries.forEach(entry => {
+            entry.addEventListener('click', async () => {
+
+                // Highlight the selected log entry
+                if(!entry.classList.contains('comparable')) {
+                    // Reset styles for all other log entries
+                    logEntries.forEach(e => {
+                        e.style.backgroundColor = ''; // Reset background color
+                        e.style.color = ''; // Reset text color
+                    });
+                    // Highlight the selected log entry
+                    entry.style.backgroundColor = '#888'; // Set darker background for selected log
+                    entry.style.color = '#fff'; // Optional: Set text color for better contrast
+                }
+
+                const filename = entry.dataset.filename;
+                const logData = logs[filename];
+                
+
+                // Check if we're in compare mode
+                if (logsContainer.dataset.compareMode === 'true') {
+                    const currentLogName = document.getElementById('selected-log-details-header').textContent.replace('Log Details: ', '');
+                    
+                    if (filename === currentLogName) {
+                        return; // Don't compare with self
+                    }
+
+                    // Perform comparison
+                    const baseLog = logs[currentLogName];
+                    const compareLog = logs[filename];
+                    const comparisonResults = compareLogs(baseLog, compareLog);
+
+                    // Display results
+                    document.getElementById('comparison-results').style.display = 'block';
+                    document.getElementById('comparison-content').textContent = comparisonResults;
+
+                    // Reset compare mode
+                    const compareButton = document.getElementById('compare-logs-button');
+                    compareButton.classList.remove('comparing');
+                    compareButton.textContent = 'Compare with...';
+                    
+                    // Add flash effect
+                    console.log('Comparison successful');
+                    compareButton.classList.add('compare-flash-success');
+                    setTimeout(() => {
+                        compareButton.classList.remove('compare-flash-success');
+                    }, 1000);
+                    
+                    logsContainer.dataset.compareMode = 'false';
+
+                    // Remove visual indicators
+                    logEntries.forEach(e => e.classList.remove('comparable'));
+                    
+                    return;
+                }
+
+                // Normal log selection behavior
+                document.getElementById('selected-log-details-header').textContent = 'Log Details: ' + filename;
+                logContent.textContent = JSON.stringify(logData, null, 2);
+                detailsContainer.style.display = 'block';
+                
+                logEntries.forEach(e => e.classList.remove('active'));
+                entry.classList.add('active');
+            });
+        });
+
+    } catch (err) {
+        console.log('Error loading logs:', err);
+        logsContainer.innerHTML = '<div class="log-entry">Error loading logs</div>';
+    }
+}
 
 /**
  * Event listener for the Save Current User button.
@@ -31,7 +164,7 @@ document.getElementById('save_button').addEventListener('click', async () => {
         || currentPageURL.includes("/p/")) {
         // Show error message
         let error_label = document.getElementById("error_message");
-        error_label.textContent = "This is not an Instagram Profile page.";
+        error_label.textContent = "Please open an Instagram Profile page.";
         error_label.hidden = false;
 
         console.log("This is not an Instagram page.");
@@ -58,6 +191,12 @@ document.getElementById('save_button').addEventListener('click', async () => {
             return;
         }
 
+        // Add flash effect
+        button.classList.add('save-followers-flash-success');
+        setTimeout(() => {
+            compareButton.classList.remove('save-followers-flash-success');
+        }, 1000);
+
         console.log(` + BUTTON: Saved as "${savedTitle}"`);
     } 
     catch (err) {
@@ -68,7 +207,7 @@ document.getElementById('save_button').addEventListener('click', async () => {
         button.disabled = false; // Re-enable button
     }
 
-    updateLogs();
+    instantiateLogEntries();
     
     console.log(" + BUTTON: Done.");
 });
@@ -78,7 +217,7 @@ document.getElementById('save_button').addEventListener('click', async () => {
  * Refreshes the display of saved logs in the popup.
  */
 document.getElementById('update_logs').addEventListener('click', async () => {
-    updateLogs();
+    instantiateLogEntries();
 });
 
 /**
@@ -86,7 +225,7 @@ document.getElementById('update_logs').addEventListener('click', async () => {
  * Implements a two-step confirmation process before clearing all logs.
  * Shows confirmation message and requires second click within 3 seconds.
  */
-document.getElementById('clear_logs').addEventListener('click', async function() {
+document.getElementById('clear_ALL_logs').addEventListener('click', async function() {
     const button = this;
     
     if (!button.classList.contains('confirm')) {
@@ -115,7 +254,7 @@ document.getElementById('clear_logs').addEventListener('click', async function()
         button.classList.remove('confirm');
         
         // Update the logs display
-        await updateLogs();
+        await instantiateLogEntries();
         
         // Reset button text after 2 seconds
         setTimeout(() => {
@@ -139,6 +278,8 @@ document.getElementById('settings-button').addEventListener('click', async () =>
     const settings_view = document.getElementById('settings-view');
     const settings_button = document.getElementById('settings-button');
 
+    refreshPopupSize();
+
     if(main_view.style.display === 'none') { // Open main page
         settings_button.textContent = 'Settings';
 
@@ -159,11 +300,6 @@ document.getElementById('settings-button').addEventListener('click', async () =>
 
     document.getElementById('log-limit').value = result.followerLimit;
 });
-
-async function getFollowerLimit() {
-    const result = await chrome.storage.local.get(['followerLimit']);
-    return result.followerLimit || 3000;
-}
 
 // Auto-save when limit changes
 document.getElementById('log-limit').addEventListener('change', async (e) => {
@@ -233,45 +369,48 @@ document.getElementById('export_logs').addEventListener('click', async () => {
  * Handles the selection and display of comparison results.
  */
 document.getElementById('compare-logs-button').addEventListener('click', async () => {
-    const comparisonSelector = document.getElementById('comparison-selector');
-    const comparisonList = document.getElementById('comparison-logs-list');
+    const button = document.getElementById('compare-logs-button');
+    const logsContainer = document.getElementById('logs-container');
     const currentLogName = document.getElementById('selected-log-details-header').textContent.replace('Log Details: ', '');
-    
-    // Toggle comparison selector
-    if (comparisonSelector.style.display === 'none') {
-        const result = await chrome.storage.local.get(['Logs']);
-        const logs = result.Logs || {};
+
+    if (!button.classList.contains('comparing')) {
+        // Enter comparison mode
+        button.classList.add('comparing');
         
-        // Create list of logs excluding the currently selected one
-        const logsHtml = Object.keys(logs)
-            .filter(filename => filename !== currentLogName)
-            .map(filename => `<div class="log-entry" data-filename="${filename}">${filename}</div>`)
-            .join('');
-            
-        comparisonList.innerHTML = logsHtml;
-        comparisonSelector.style.display = 'block';
+        // Change button text and style
+        button.textContent = 'Cancel';
         
-        // Add click handlers for comparison selection
-        comparisonList.querySelectorAll('.log-entry').forEach(entry => {
-            entry.addEventListener('click', async () => {
-                const compareLogName = entry.dataset.filename;
-                const logs = (await chrome.storage.local.get(['Logs'])).Logs;
-                
-                const baseLog = logs[currentLogName];
-                const compareLog = logs[compareLogName];
-                
-                const comparisonResults = compareLogs(baseLog, compareLog);
-                
-                // Display results
-                document.getElementById('comparison-results').style.display = 'block';
-                document.getElementById('comparison-content').textContent = comparisonResults;
-                comparisonSelector.style.display = 'none';
-            });
+        // Add visual indicator to logs that can be compared
+        const logEntries = logsContainer.querySelectorAll('.log-entry');
+        logEntries.forEach(entry => {
+            if (entry.dataset.filename !== currentLogName) {
+                entry.classList.add('comparable');
+            }
         });
+        
+        // Modify click behavior temporarily
+        logsContainer.dataset.compareMode = 'true';
     } else {
-        comparisonSelector.style.display = 'none';
+        cancelComparisonMode();
     }
 });
+
+/**
+ * Cancels the comparison mode and resets the UI.
+ * Removes visual indicators and resets button state.
+ */
+async function cancelComparisonMode() {
+    const button = document.getElementById('compare-logs-button');
+    button.classList.remove('comparing');
+    button.textContent = 'Compare with...';
+    
+    // Remove visual indicators
+    const logEntries = document.querySelectorAll('.log-entry');
+    logEntries.forEach(entry => entry.classList.remove('comparable'));
+    
+    // Reset comparison mode
+    document.getElementById('logs-container').dataset.compareMode = 'false';
+}
 
 // When a comparison log is clicked
 document.getElementById('comparison-logs-list').addEventListener('click', async (e) => {
@@ -282,6 +421,36 @@ document.getElementById('comparison-logs-list').addEventListener('click', async 
         top: 0,
         behavior: 'smooth'
     });
+});
+
+/**
+ * Event listener for the Close Details button.
+ * Closes the log details view and resets selection.
+ */
+document.getElementById('close-details-button').addEventListener('click', () => {
+    const detailsContainer = document.getElementById('selected-log-details');
+    const logEntries = document.querySelectorAll('.log-entry');
+    
+    // Hide details container
+    detailsContainer.style.display = 'none';
+    
+    // Clear content
+    document.getElementById('log-content').textContent = '';
+    document.getElementById('selected-log-details-header').textContent = 'Log Details: ';
+    
+    // Remove active state from all log entries
+    logEntries.forEach(entry => {
+        entry.classList.remove('active');
+
+        entry.style.backgroundColor = ''; // Reset background color
+        entry.style.color = ''; // Reset text color
+    });
+
+    // Reset comparison mode
+    cancelComparisonMode();
+
+    // Refresh Whole Popup Size
+    refreshPopupSize();
 });
 
 /**
@@ -365,7 +534,13 @@ document.getElementById('delete-log-button').addEventListener('click', async () 
         document.getElementById('log-content').textContent = '';
         
         // Update the logs display
-        await updateLogs();
+        instantiateLogEntries();
+
+        // Cancel comparison mode
+        cancelComparisonMode();
+
+        // Refresh popup size
+        refreshPopupSize();
         
         console.log(`Log "${logTitle}" deleted successfully`);
     } catch (err) {
@@ -378,59 +553,65 @@ document.getElementById('delete-log-button').addEventListener('click', async () 
 });
 
 /**
- * Updates and displays the list of saved logs in the popup.
- * Handles the display of log entries and attaches click listeners.
- * Shows loading state and error messages when appropriate.
- * @async
- * @returns {void}
+ * Event listener for the Import Logs button.
+ * Handles importing logs from a JSON file and merging with existing logs.
+ * Shows feedback during import process.
  */
-async function updateLogs() {
-    console.log("Getting logs...");
-    const logsContainer = document.getElementById('logs-container');
-    logsContainer.innerHTML = 'Loading Logs...';
-    
-    try {
-        const result = await chrome.storage.local.get(['Logs']);
-        const logs = result.Logs || {};
-        
-        if (Object.keys(logs).length === 0) {
-            logsContainer.innerHTML = '<div class="log-entry">No logs found</div>';
-            return;
+document.getElementById('import_logs').addEventListener('click', async () => {
+    const fileInput = document.getElementById('import-file');
+    const importButton = document.getElementById('import_logs');
+    const originalText = importButton.textContent;
+
+    // Trigger file input when button is clicked
+    fileInput.click();
+
+    fileInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        try {
+            importButton.textContent = 'Importing...';
+            importButton.disabled = true;
+            importButton.classList.add('importing');
+
+            // Read file content
+            const content = await file.text();
+            const importedLogs = JSON.parse(content);
+
+            // Validate imported data structure
+            if (!importedLogs || typeof importedLogs !== 'object') {
+                throw new Error('Invalid file format');
+            }
+
+            // Get existing logs
+            const result = await chrome.storage.local.get(['Logs']);
+            const currentLogs = result.Logs || {};
+
+            // Merge logs
+            const updatedLogs = {
+                ...currentLogs,
+                ...importedLogs
+            };
+
+            // Save merged logs
+            await chrome.storage.local.set({ 'Logs': updatedLogs });
+
+            importButton.textContent = 'Import Successful!';
+            console.log('Logs imported successfully');
+            
+            // Refresh logs display
+            await instantiateLogEntries();
+
+        } catch (err) {
+            console.error('Error importing logs:', err);
+            importButton.textContent = 'Import Failed';
+        } finally {
+            setTimeout(() => {
+                importButton.textContent = originalText;
+                importButton.disabled = false;
+                importButton.classList.remove('importing');
+                fileInput.value = ''; // Reset file input
+            }, 2000);
         }
-
-        console.log('Logs:', logs);
-
-        const logsHtml = Object.keys(logs).map(filename => 
-            `<div class="log-entry" data-filename="${filename}">${filename}</div>`
-        ).join('');
-
-        logsContainer.innerHTML = logsHtml;
-
-        // Add click handlers to log entries
-        const logEntries = logsContainer.querySelectorAll('.log-entry');
-        const detailsContainer = document.getElementById('selected-log-details');
-        const logContent = document.getElementById('log-content');
-
-        logEntries.forEach(entry => {
-            entry.addEventListener('click', () => {
-                const filename = entry.dataset.filename;
-                const logData = logs[filename];
-
-                // Update details header to include filename
-                document.getElementById('selected-log-details-header').textContent = 'Log Details: ' + filename;
-                
-                // Update details view
-                logContent.textContent = JSON.stringify(logData, null, 2);
-                detailsContainer.style.display = 'block';
-                
-                // Update active state
-                logEntries.forEach(e => e.classList.remove('active'));
-                entry.classList.add('active');
-            });
-        });
-
-    } catch (err) {
-        console.log('Error loading logs:', err);
-        logsContainer.innerHTML = '<div class="log-entry">Error loading logs</div>';
-    }
-}
+    });
+});
