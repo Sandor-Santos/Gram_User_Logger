@@ -20,8 +20,9 @@ A Chrome Extension to log Instagram followers for comparison to earlier logs
 - Comparing a selected log to another log
 - Exporting differences between two logs
 - Adjustable Logging limit (Prevents accidental DDOS attacking)
-- Deleting Logs
 - Exporting Logs
+- Importing Logs
+- Deleting Logs
 
 ---
 
@@ -59,6 +60,8 @@ A Chrome Extension to log Instagram followers for comparison to earlier logs
 </h2>
 
 <img src="https://github.com/Swaghacker7/Gram_User_Logger/blob/main/Screenshots/Download_Folder.png?raw=true" width=50%> <br>
+
+2. Unzip the downloaded folder
 
 <h2>
   2. Install Extension
